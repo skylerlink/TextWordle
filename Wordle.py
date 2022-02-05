@@ -89,6 +89,7 @@ def main():
     good_hint = ["_", "_", "_", "_", "_"]
     okay_hint = []
     bad_hint = []
+    already_guessed = []
 
     # A loop that continues to ask the user for a new 5-letter word (or a "Guess")
     # You win after guessing the Word, you lose after 6 wrong Guesses
@@ -102,14 +103,23 @@ def main():
         # 2 loops to verify the (Guess is both a 5-letter word) AND (in either the Guess-List or the Answer-List)
         # If either or both of these qualifications are not met, the program asks the user for a new Guess
         # Since these Guesses are not possible answers, they don't count against the Guess-Count
-        while len(guess) != 5:
-            print("Guess must be 5 characters.")
-            print()
-            guess = input(f"Still Guess #{guess_count}: ").upper()
-        while (guess not in answers_list) and (guess not in guesses_list):
-            print("Word not in word list.")
-            print()
-            guess = input(f"Still Guess #{guess_count}: ").upper()
+        guess_valid = False
+        while not guess_valid:
+            if len(guess) != 5:
+                print("Guess must be 5 characters.")
+                print()
+                guess = input(f"Still Guess #{guess_count}: ").upper()
+            elif (guess not in answers_list) and (guess not in guesses_list):
+                print("Word not in word list.")
+                print()
+                guess = input(f"Still Guess #{guess_count}: ").upper()
+            elif guess in already_guessed:
+                print("You already guessed this word")
+                print()
+                guess = input(f"Still Guess #{guess_count}: ").upper()
+            else:
+                already_guessed.append(guess)
+                guess_valid = True
 
         # Now that we've verified the current Guess is valid, the Guess-Counter is incremented
         guess_count += 1
